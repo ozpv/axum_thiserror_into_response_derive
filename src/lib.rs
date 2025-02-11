@@ -45,7 +45,7 @@
 //! }
 //! ```
 //!
-//! A working example with all of the features enabled can be viewed [in the repo](https://github.com/ozpv/axum_thiserror_intoresponse_derive/blob/main/example/src/main.rs)
+//! A working example with all the features enabled can be viewed [in the repo](https://github.com/ozpv/axum_thiserror_intoresponse_derive/blob/main/example/src/main.rs)
 //!
 //! ## Contributing
 //!
