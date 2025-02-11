@@ -6,7 +6,7 @@ extern crate proc_macro;
 use alloc::{string::String, vec::Vec};
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, Data, DeriveInput, Expr, Lit, Meta};
+use syn::{parse_macro_input, Data, DeriveInput, Expr, Fields, Lit, Meta};
 
 #[proc_macro_derive(IntoResponse, attributes(internal_text, status, text))]
 pub fn derive_into_response(input: TokenStream) -> TokenStream {
@@ -40,17 +40,35 @@ pub fn derive_into_response(input: TokenStream) -> TokenStream {
         for variant in &data.variants {
             let name = &variant.ident;
 
+            // make sure fields on the enum variants are allowed
+            let fields = match &variant.fields {
+                Fields::Named(_) => quote! {{..}},
+                Fields::Unit => quote! {},
+                Fields::Unnamed(fields) => {
+                    let all_fields = fields
+                        .unnamed
+                        .iter()
+                        .map(|_| quote! {_}.into())
+                        .collect::<Vec<proc_macro2::TokenStream>>();
+
+                    quote! {
+                        (#(#all_fields),*)
+                    }
+                }
+            };
+
             let attr = variant
                 .attrs
                 .iter()
                 .find(|attr| attr.path().is_ident("status"));
 
             if let Some(attr) = attr {
+                // extract the status and build the tokens
                 if let Meta::List(list) = &attr.meta {
                     let status = &list.tokens;
 
                     let status = quote! {
-                        Self::#name => #status,
+                        Self::#name #fields => ::axum::http::status::#status,
                     };
 
                     variant_overrides.push(status);
@@ -68,7 +86,7 @@ pub fn derive_into_response(input: TokenStream) -> TokenStream {
         impl ::axum::response::IntoResponse for #name {
             fn into_response(self) -> ::axum::response::Response {
                 let status = match self {
-                    #(#variant_overrides),*
+                    #(#variant_overrides)* 
                     _ => ::axum::http::StatusCode::INTERNAL_SERVER_ERROR,
                 };
 
@@ -96,7 +114,7 @@ pub fn derive_into_response(input: TokenStream) -> TokenStream {
                     __S: _serde::Serializer,
                 {
                     let status = match self {
-                        #(#variant_overrides),*
+                        #(#variant_overrides)*
                         _ => ::axum::http::StatusCode::INTERNAL_SERVER_ERROR,
                     }.as_u16();
 
