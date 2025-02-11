@@ -2,16 +2,16 @@ use axum::{response::IntoResponse, routing::get, Json, Router};
 use axum_thiserror_intoresponse_derive::IntoResponse;
 use thiserror::Error;
 use tokio::net::TcpListener;
+use tower_http::trace::TraceLayer;
 
-// sets the default response for StatusCode::INTERNAL_SERVER_ERROR
-// #[internal_text = "overridden"]
 #[derive(Debug, Error, IntoResponse)]
+// set the default response for StatusCode::INTERNAL_SERVER_ERROR
+#[internal_text = "overridden"]
 pub enum AppError {
-    // show the internal error with #[display(true)]
-    #[error("This shouldn't show in the response")]
+    #[error("This shouldn't show in the response, but will in tracing")]
     Internal,
-    // automatically send the error text in the response
-    // when the error is set other than INTERNAL_SERVER_ERROR
+    // automatically sends the error text in the response
+    // when the status is set other than StatusCode::INTERNAL_SERVER_ERROR
     #[status(StatusCode::BAD_REQUEST)]
     #[error("Bad request")]
     ClientError,
@@ -47,6 +47,10 @@ async fn multiple_fields() -> impl IntoResponse {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    tracing_subscriber::fmt()
+        .with_max_level(tracing::Level::DEBUG)
+        .init();
+
     let listener = TcpListener::bind("127.0.0.1:3000").await?;
 
     let routes = Router::new()
@@ -54,9 +58,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/bad_request", get(client_fail))
         .route("/json", get(as_json))
         .route("/multiple_fields", get(multiple_fields))
-        .route("/unauthorized", get(unauthorized));
+        .route("/unauthorized", get(unauthorized))
+        .layer(TraceLayer::new_for_http());
 
-    println!("Listening on http://127.0.0.1:3000/");
+    tracing::info!("Listening on http://127.0.0.1:3000/");
 
     axum::serve(listener, routes).await?;
 
