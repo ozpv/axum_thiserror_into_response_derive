@@ -1,5 +1,5 @@
 [package]
-name = "axum_thiserror_into_response_derive"
+name = "axum_thiserror_intoresponse_derive"
 version = "0.1.0"
 authors = ["ozpv"]
 edition = "2021"

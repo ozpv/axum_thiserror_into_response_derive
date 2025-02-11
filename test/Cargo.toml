@@ -1,10 +1,10 @@
 [package]
-name = "axum_error_into_response_derive_test"
+name = "axum_thiserror_intoresponse_derive_test"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 axum = "0.8.1"
-axum_error_into_response_derive = { path = ".." }
+axum_thiserror_intoresponse_derive = { path = ".." }
 thiserror = "2.0.11"
 tokio = { version = "1.43.0", features = ["rt-multi-thread"] }
