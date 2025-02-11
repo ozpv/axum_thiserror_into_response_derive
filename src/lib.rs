@@ -8,7 +8,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Data, DeriveInput, Expr, Fields, Lit, Meta};
 
-#[proc_macro_derive(IntoResponse, attributes(internal_text, status, text))]
+#[proc_macro_derive(IntoResponse, attributes(internal_text, status))]
 pub fn derive_into_response(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
@@ -40,7 +40,7 @@ pub fn derive_into_response(input: TokenStream) -> TokenStream {
         for variant in &data.variants {
             let name = &variant.ident;
 
-            // make sure fields on the enum variants are allowed
+            // make sure fields on the enum variants are matched
             let fields = match &variant.fields {
                 Fields::Named(_) => quote! {{..}},
                 Fields::Unit => quote! {},
@@ -86,7 +86,7 @@ pub fn derive_into_response(input: TokenStream) -> TokenStream {
         impl ::axum::response::IntoResponse for #name {
             fn into_response(self) -> ::axum::response::Response {
                 let status = match self {
-                    #(#variant_overrides)* 
+                    #(#variant_overrides)*
                     _ => ::axum::http::StatusCode::INTERNAL_SERVER_ERROR,
                 };
 

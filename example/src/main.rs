@@ -10,7 +10,7 @@ pub enum AppError {
     // show the internal error with #[display(true)]
     #[error("This shouldn't show in the response")]
     Internal,
-    // automatically send the error text in the response 
+    // automatically send the error text in the response
     // when the error is set other than INTERNAL_SERVER_ERROR
     #[status(StatusCode::BAD_REQUEST)]
     #[error("Bad request")]
