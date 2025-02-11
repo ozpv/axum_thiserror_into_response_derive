@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 axum = "0.8.1"
-axum_thiserror_intoresponse_derive = { path = ".." }
+axum_thiserror_intoresponse_derive = { path = "..", features = ["serde"] }
+serde = "1.0.217"
 thiserror = "2.0.11"
 tokio = { version = "1.43.0", features = ["rt-multi-thread"] }

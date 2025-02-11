@@ -62,7 +62,9 @@ pub fn derive_into_response(input: TokenStream) -> TokenStream {
     }
 
     // build the impl
-    let expanded = quote! {
+    #[allow(unused_mut)]
+    let mut expanded = quote! {
+        #[automatically_derived]
         impl ::axum::response::IntoResponse for #name {
             fn into_response(self) -> ::axum::response::Response {
                 let status = match self {
@@ -82,6 +84,40 @@ pub fn derive_into_response(input: TokenStream) -> TokenStream {
             }
         }
     };
+
+    #[cfg(feature = "serde")]
+    {
+        let ser = quote! {
+            extern crate serde as _serde;
+            #[automatically_derived]
+            impl _serde::Serialize for #name {
+                fn serialize<__S>(&self, __serializer: __S) -> Result<__S::Ok, __S::Error>
+                where
+                    __S: _serde::Serializer,
+                {
+                    let status = match self {
+                        #(#variant_overrides),*
+                        _ => ::axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                    }.as_u16();
+
+                    let text = {
+                        if status == ::axum::http::StatusCode::INTERNAL_SERVER_ERROR {
+                            #internal_text.to_string()
+                        } else {
+                            self.to_string()
+                        }
+                    };
+
+                    let mut __serde_state = _serde::Serializer::serialize_struct(__serializer, "", false as usize + 1 + 1)?;
+                    _serde::ser::SerializeStruct::serialize_field(&mut __serde_state, "status", &status)?;
+                    _serde::ser::SerializeStruct::serialize_field(&mut __serde_state, "error", &text)?;
+                    _serde::ser::SerializeStruct::end(__serde_state)
+                }
+            }
+        };
+
+        expanded.extend([ser]);
+    }
 
     expanded.into()
 }
