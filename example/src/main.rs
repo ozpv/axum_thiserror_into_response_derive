@@ -1,5 +1,5 @@
 use axum::{response::IntoResponse, routing::get, Json, Router};
-use axum_thiserror_intoresponse_derive::IntoResponse;
+use axum_thiserror_tracing::IntoResponse;
 use thiserror::Error;
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;

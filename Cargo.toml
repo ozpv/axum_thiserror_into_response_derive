@@ -1,13 +1,13 @@
 [package]
-name = "axum_thiserror_intoresponse_derive"
+name = "axum_thiserror_tracing"
 description = "Helpful IntoResponse derive macro for the thiserror crate"
 version = "0.1.0"
 authors = ["ozpv https://ozpv.dev"]
 license = "MIT"
-repository = "https://github.com/ozpv/axum_thiserror_intoresponse_derive/"
+repository = "https://github.com/ozpv/axum_thiserror_tracing/"
 keywords = ["axum", "thiserror", "intoresponse", "derive"]
 exclude = ["example/"]
-publish = ["axum_thiserror_intoresponse_derive"]
+publish = ["axum_thiserror_tracing"]
 readme = "README.md"
 categories = ["web-programming::http-server"]
 edition = "2021"

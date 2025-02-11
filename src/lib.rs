@@ -20,7 +20,7 @@
 //! ## Example
 //!
 //! ```rust
-//! use axum_thiserror_intoresponse_derive::IntoResponse;
+//! use axum_thiserror_tracing::IntoResponse;
 //! use thiserror::Error;
 //!
 //! #[derive(Debug, Error, IntoResponse)]

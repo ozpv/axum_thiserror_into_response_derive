@@ -1,4 +1,4 @@
-# axum_thiserror_intoresponse_derive
+# axum_thiserror_tracing
 
 Helpful `IntoResponse` derive macro for the thiserror crate
 
@@ -22,7 +22,7 @@ To display the internal error with tracing, enable the crate's tracing feature
 ## Example
 
 ```rust
-use axum_thiserror_intoresponse_derive::IntoResponse;
+use axum_thiserror_tracing::IntoResponse;
 use thiserror::Error;
 
 #[derive(Debug, Error, IntoResponse)]
