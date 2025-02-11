@@ -11,7 +11,7 @@ response of "Something went wrong"
 
 You can change the default text response of a 500 status code using the `#[internal_text = "..."]` attribute
 
-Default behavior can be overridden on certain fields using the `#[status(...)]` macro
+Default behavior can be overridden on certain fields using the `#[status(...)]` attribute 
 
 When overridden, the server will respond with the custom status and plain text according to your `Debug` implementation
 
