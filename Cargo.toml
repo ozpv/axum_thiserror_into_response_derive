@@ -1,0 +1,14 @@
+[package]
+name = "axum_thiserror_into_response_derive"
+version = "0.1.0"
+authors = ["ozpv"]
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1.0.93"
+quote = "1.0.38"
+syn = "2.0.98"
