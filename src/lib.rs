@@ -10,13 +10,14 @@
 //! You can change the default text response of a 500 status code using the `#[internal_text = "..."]` attribute
 //!
 //! Default behavior can be overridden on certain fields using the `#[status(...)]` macro
+//!
 //! When overridden, the server will respond with the custom status and plain text according to your `Debug` implementation
 //!
 //! If you'd like a Json response, enable the crate's serde feature, and wrap the enum in `Json(...)`
 //!
 //! To display the internal error with tracing, enable the crate's tracing feature
 //!
-//! # Example
+//! ## Example
 //!
 //! ```rust
 //! use axum_thiserror_intoresponse_derive::IntoResponse;
@@ -46,11 +47,11 @@
 //!
 //! A working example with all of the features enabled can be viewed [in the repo](https://github.com/ozpv/axum_thiserror_intoresponse_derive/blob/main/example/src/main.rs)
 //!
-//! # Contributing
+//! ## Contributing
 //!
 //! All contributions are welcome. Just open a pull request in the repo.
 //!
-//! # License
+//! ## License
 //!
 //! This lib is licensed under the [MIT license](https://github.com/ozpv/axum_thiserror_intoresponse_derive/blob/main/LICENSE)
 
