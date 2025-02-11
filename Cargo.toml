@@ -4,6 +4,7 @@ description = "Helpful IntoResponse derive macro for the thiserror crate"
 version = "0.1.0"
 authors = ["ozpv https://ozpv.dev"]
 license = "MIT"
+homepage = "https://github.com/ozpv/axum_thiserror_tracing"
 repository = "https://github.com/ozpv/axum_thiserror_tracing/"
 keywords = ["axum", "thiserror", "intoresponse", "derive"]
 exclude = ["example/"]
