@@ -1,5 +1,5 @@
 [package]
-name = "axum_thiserror_intoresponse_derive_test"
+name = "axum_thiserror_intoresponse_derive_example"
 version = "0.1.0"
 edition = "2021"
 
